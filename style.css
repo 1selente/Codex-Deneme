@@ -1,54 +1,133 @@
+:root {
+  --bg: #f2f2f2;
+  --text: #111;
+  --card: #fff;
+  --accent: #4f46e5;
+  --button-text: #fff;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #eee;
+  --card: #1f1f1f;
+  --accent: #60a5fa;
+  --button-text: #000;
+  --shadow: rgba(255, 255, 255, 0.1);
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  padding: 2rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+#toggleTheme {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 #controls {
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  max-width: 500px;
+  margin: 0 auto 2rem auto;
 }
 
-input, textarea, select, button {
-    margin: 5px;
-    padding: 8px;
+#controls input,
+#controls select,
+#controls textarea {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#controls button {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  background-color: var(--accent);
+  color: var(--button-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: background 0.2s;
+}
+
+#controls button:hover {
+  background-color: #4338ca;
 }
 
 .card {
-    width: 300px;
-    height: 200px;
-    perspective: 1000px;
-    margin: 20px auto;
-    position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 220px;
+  margin: 2rem auto;
+  perspective: 1000px;
+  position: relative;
 }
 
 .card div {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2em;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  font-size: 1.2rem;
+  transition: transform 0.6s;
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
 .front {
-    z-index: 2;
+  z-index: 2;
 }
 
 .back {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
-.flip {
-    transform: rotateY(180deg);
+.card.flipped .front {
+  transform: rotateY(180deg);
 }
 
-.hidden {
-    display: none;
+.card.flipped .back {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+#nextBtn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  background-color: var(--accent);
+  color: var(--button-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
