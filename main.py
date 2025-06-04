@@ -1,0 +1,1 @@
+print("Codex ortamı çalışıyor!")
