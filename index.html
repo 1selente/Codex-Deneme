@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Uygulaması</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="controls">
+            <h1>Flashcard Uygulaması</h1>
+            <div>
+                <input type="text" id="courseInput" placeholder="Kurs adı"/>
+                <button id="addCourseBtn">Kurs Ekle</button>
+            </div>
+            <div>
+                <select id="courseSelect"></select>
+                <input type="text" id="topicInput" placeholder="Konu adı"/>
+                <button id="addTopicBtn">Konu Ekle</button>
+            </div>
+            <div>
+                <select id="topicSelect"></select>
+            </div>
+            <div>
+                <textarea id="qaInput" placeholder="Soru|Cevap her satırda"></textarea>
+                <button id="addQABtn">Soru/Cevap Ekle</button>
+            </div>
+        </div>
+        <div id="cardContainer" class="hidden">
+            <div id="card" class="card">
+                <div class="front" id="question"></div>
+                <div class="back" id="answer"></div>
+            </div>
+            <button id="nextBtn">Sonraki Soru</button>
+        </div>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>
