@@ -43,6 +43,13 @@ def simulate_long_entry(
     )
 
 
+def outcome_target_position(fill_pos: int, horizon_days: int) -> int:
+    """D1 means the close of the entry session; D3 is the third session close."""
+    if horizon_days < 1:
+        raise ValueError("horizon_days must be >= 1")
+    return fill_pos + horizon_days - 1
+
+
 def forward_return(entry_price: float, future_close: float) -> float:
     if entry_price <= 0:
         raise ValueError("entry_price must be positive")
