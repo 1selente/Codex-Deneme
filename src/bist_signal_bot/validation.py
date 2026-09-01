@@ -45,10 +45,10 @@ def validate_ohlcv(
         if df.index.tz is None:
             errors.append("timezone_naive_index")
 
-    if df.loc[:, REQUIRED_COLUMNS].isna().any().any():
+    if df.loc[:, list(REQUIRED_COLUMNS)].isna().any().any():
         errors.append("null_ohlcv")
 
-    numeric = df.loc[:, REQUIRED_COLUMNS]
+    numeric = df.loc[:, list(REQUIRED_COLUMNS)]
     if (numeric[["Open", "High", "Low", "Close"]] <= 0).any().any():
         errors.append("nonpositive_price")
     if (numeric["Volume"] < 0).any():
