@@ -1,5 +1,3 @@
-import pandas as pd
-
 from bist_signal_bot.strategy import evaluate_starter_pullback
 
 
