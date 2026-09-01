@@ -1,1 +1,0 @@
-print("Codex ortamı çalışıyor!")
