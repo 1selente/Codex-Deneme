@@ -13,7 +13,7 @@ The human user remains the only execution decision-maker.
 - Python
 - Daily (1D) completed bars
 - Yahoo Finance/yfinance adapter for research use
-- BIST symbols in `.IS` format
+- Starter liquid BIST watchlist using `.IS` symbols; point-in-time BIST100 membership is a later research phase
 - Transparent pandas/numpy indicators
 - Deterministic starter strategy
 - SQLite signal/paper-trade journal
