@@ -5,23 +5,30 @@ import os
 from .strategy import SignalCandidate
 
 
-def format_signal_message(candidate: SignalCandidate, *, provider: str, slippage_bps: float) -> str:
+def format_signal_message(
+    candidate: SignalCandidate,
+    *,
+    signal_id: str,
+    provider: str,
+    slippage_bps: float,
+) -> str:
     i = candidate.indicators
     return (
         f"🟢 BIST ARAŞTIRMA SİNYALİ | {candidate.symbol.replace('.IS', '')}\n\n"
         f"Strateji: {candidate.strategy_version}\n"
-        f"Timeframe: 1D\n"
+        "Timeframe: 1D\n"
         f"Sinyal barı: {candidate.bar_time.isoformat()}\n"
         f"Kapanış fiyatı: {candidate.signal_price:.2f} TL\n\n"
         f"Koşullar: {candidate.conditions_met}/{candidate.conditions_total}\n"
-        f"• Close > SMA50\n"
+        "• Close > SMA50\n"
         f"• EMA20 mesafe: %{i['EMA_DISTANCE'] * 100:.2f}\n"
         f"• RSI14: {i['RSI14']:.2f}\n"
         f"• Hacim oranı: {i['VOLUME_RATIO']:.2f}\n"
         f"• ATR14: {i['ATR14']:.2f}\n\n"
-        f"Paper varsayımı: sonraki uygun seans açılışı\n"
+        "Paper varsayımı: sonraki uygun seans açılışı\n"
         f"Slippage senaryosu: {slippage_bps:.0f} bps\n"
-        f"Veri sağlayıcı: {provider}\n\n"
+        f"Veri sağlayıcı: {provider}\n"
+        f"Signal ID: {signal_id[:12]}\n\n"
         "⚠️ Otomatik emir gönderilmedi. Bu bir araştırma/paper-trading sinyalidir."
     )
 
