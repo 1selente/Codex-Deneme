@@ -21,18 +21,13 @@ class SignalCandidate:
     conditions_total: int
 
 
-def evaluate_starter_pullback(
-    df: pd.DataFrame,
+def _candidate_from_enriched_row(
+    row: pd.Series,
     *,
     symbol: str,
+    bar_time: pd.Timestamp,
     cfg: dict[str, Any],
 ) -> SignalCandidate | None:
-    warmup = int(cfg["warmup_bars"])
-    if len(df) < warmup:
-        return None
-
-    x = enrich_indicators(df, cfg)
-    row = x.iloc[-1]
     required = ["SMA50", "EMA20", "RSI14", "VOLUME_RATIO", "ATR14"]
     if row[required].isna().any():
         return None
@@ -51,14 +46,13 @@ def evaluate_starter_pullback(
         ("rsi_pullback_band", float(cfg["rsi_min"]) <= rsi <= float(cfg["rsi_max"])),
         ("volume_filter", volume_ratio >= float(cfg["volume_ratio_min"])),
     ]
-
     if not all(ok for _, ok in checks):
         return None
 
     return SignalCandidate(
         symbol=symbol,
         strategy_version=str(cfg["name"]),
-        bar_time=x.index[-1],
+        bar_time=bar_time,
         signal_type="LONG_CANDIDATE",
         signal_price=close,
         indicators={
@@ -73,3 +67,46 @@ def evaluate_starter_pullback(
         conditions_met=sum(1 for _, ok in checks if ok),
         conditions_total=len(checks),
     )
+
+
+def evaluate_starter_pullback(
+    df: pd.DataFrame,
+    *,
+    symbol: str,
+    cfg: dict[str, Any],
+) -> SignalCandidate | None:
+    warmup = int(cfg["warmup_bars"])
+    if len(df) < warmup:
+        return None
+    x = enrich_indicators(df, cfg)
+    return _candidate_from_enriched_row(
+        x.iloc[-1],
+        symbol=symbol,
+        bar_time=x.index[-1],
+        cfg=cfg,
+    )
+
+
+def historical_candidates(
+    df: pd.DataFrame,
+    *,
+    symbol: str,
+    cfg: dict[str, Any],
+) -> list[SignalCandidate]:
+    """Evaluate every historical bar causally using one indicator pass."""
+    warmup = int(cfg["warmup_bars"])
+    if len(df) < warmup:
+        return []
+
+    x = enrich_indicators(df, cfg)
+    found: list[SignalCandidate] = []
+    for pos in range(warmup - 1, len(x)):
+        candidate = _candidate_from_enriched_row(
+            x.iloc[pos],
+            symbol=symbol,
+            bar_time=x.index[pos],
+            cfg=cfg,
+        )
+        if candidate is not None:
+            found.append(candidate)
+    return found
