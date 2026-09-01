@@ -11,6 +11,7 @@ from .strategy import SignalCandidate
 
 SCHEMA = """
 PRAGMA journal_mode=WAL;
+PRAGMA foreign_keys=ON;
 
 CREATE TABLE IF NOT EXISTS signals (
     signal_uuid TEXT PRIMARY KEY,
@@ -26,6 +27,16 @@ CREATE TABLE IF NOT EXISTS signals (
     data_source TEXT NOT NULL,
     data_hash TEXT NOT NULL,
     UNIQUE(strategy_version, symbol, timeframe, bar_time, signal_type)
+);
+
+CREATE TABLE IF NOT EXISTS paper_fills (
+    signal_uuid TEXT PRIMARY KEY,
+    fill_bar_time TEXT NOT NULL,
+    raw_open REAL NOT NULL,
+    fill_price REAL NOT NULL,
+    slippage_bps REAL NOT NULL,
+    commission_bps REAL NOT NULL,
+    FOREIGN KEY(signal_uuid) REFERENCES signals(signal_uuid)
 );
 
 CREATE TABLE IF NOT EXISTS notifications (
@@ -60,6 +71,7 @@ class Journal:
     def connect(self) -> Iterator[sqlite3.Connection]:
         conn = sqlite3.connect(self.path)
         conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys=ON")
         try:
             yield conn
             conn.commit()
@@ -102,7 +114,13 @@ class Journal:
             )
             return cur.rowcount == 1
 
-    def record_notification(self, signal_uuid: str, attempted_at: str, status: str, error: str | None = None) -> None:
+    def record_notification(
+        self,
+        signal_uuid: str,
+        attempted_at: str,
+        status: str,
+        error: str | None = None,
+    ) -> None:
         with self.connect() as conn:
             conn.execute(
                 """
@@ -110,4 +128,53 @@ class Journal:
                 VALUES (?, ?, ?, ?)
                 """,
                 (signal_uuid, attempted_at, status, error),
+            )
+
+    def insert_paper_fill(
+        self,
+        *,
+        signal_uuid: str,
+        fill_bar_time: str,
+        raw_open: float,
+        fill_price: float,
+        slippage_bps: float,
+        commission_bps: float,
+    ) -> bool:
+        with self.connect() as conn:
+            cur = conn.execute(
+                """
+                INSERT OR IGNORE INTO paper_fills(
+                    signal_uuid, fill_bar_time, raw_open, fill_price,
+                    slippage_bps, commission_bps
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    signal_uuid,
+                    fill_bar_time,
+                    raw_open,
+                    fill_price,
+                    slippage_bps,
+                    commission_bps,
+                ),
+            )
+            return cur.rowcount == 1
+
+    def upsert_outcome(
+        self,
+        *,
+        signal_uuid: str,
+        horizon_days: int,
+        return_value: float,
+        mfe: float,
+        mae: float,
+        resolved_at: str,
+    ) -> None:
+        with self.connect() as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO outcomes(
+                    signal_uuid, horizon_days, return_value, mfe, mae, resolved_at
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (signal_uuid, horizon_days, return_value, mfe, mae, resolved_at),
             )
