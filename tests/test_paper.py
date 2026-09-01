@@ -1,9 +1,9 @@
 import pytest
 
-from bist_signal_bot.paper import next_bar_open, simulate_long_entry
+from bist_signal_bot.paper import next_bar_open, outcome_target_position, simulate_long_entry
 
 
-def test_slippage_is_applied_to_next_open():
+def test_d1_is_entry_session_close_position():\n    assert outcome_target_position(10, 1) == 10\n    assert outcome_target_position(10, 3) == 12\n\n\ndef test_slippage_is_applied_to_next_open():
     fill = simulate_long_entry(100.0, slippage_bps=10, commission_bps=0)
     assert fill.fill_price == pytest.approx(100.1)
 
