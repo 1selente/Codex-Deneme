@@ -1,4 +1,3 @@
-import pandas as pd
 import pytest
 
 from bist_signal_bot.paper import next_bar_open, simulate_long_entry
