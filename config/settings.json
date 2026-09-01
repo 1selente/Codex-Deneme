@@ -10,8 +10,8 @@
     "ema_pullback": 20,
     "ema_distance_max": 0.025,
     "rsi_period": 14,
-    "rsi_min": 40.0,
-    "rsi_max": 50.0,
+    "rsi_min": 40,
+    "rsi_max": 50,
     "volume_ma": 20,
     "volume_ratio_min": 0.8,
     "warmup_bars": 100
@@ -19,7 +19,12 @@
   "paper": {
     "commission_bps": 0,
     "slippage_bps": 10,
-    "outcome_horizons": [1, 3, 5, 10]
+    "outcome_horizons": [
+      1,
+      3,
+      5,
+      10
+    ]
   },
   "universe": [
     "THYAO.IS",
@@ -32,5 +37,6 @@
     "BIMAS.IS",
     "TUPRS.IS",
     "YKBNK.IS"
-  ]
+  ],
+  "universe_name": "starter_liquid_watchlist"
 }
