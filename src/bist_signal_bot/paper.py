@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import pandas as pd
+
 
 @dataclass(frozen=True)
 class PaperFill:
@@ -11,16 +13,30 @@ class PaperFill:
     commission_bps: float
 
 
-def simulate_long_entry(next_bar_open: float, *, slippage_bps: float, commission_bps: float = 0.0) -> PaperFill:
-    if next_bar_open <= 0:
-        raise ValueError("next_bar_open must be positive")
+def next_bar_open(df: pd.DataFrame, signal_time: pd.Timestamp) -> tuple[pd.Timestamp, float]:
+    """Return the first available bar strictly after the signal bar."""
+    later = df.loc[df.index > signal_time]
+    if later.empty:
+        raise LookupError("no eligible bar exists after signal")
+    ts = later.index[0]
+    return ts, float(later.iloc[0]["Open"])
+
+
+def simulate_long_entry(
+    next_bar_open_price: float,
+    *,
+    slippage_bps: float,
+    commission_bps: float = 0.0,
+) -> PaperFill:
+    if next_bar_open_price <= 0:
+        raise ValueError("next_bar_open_price must be positive")
     if slippage_bps < 0 or commission_bps < 0:
         raise ValueError("cost assumptions cannot be negative")
 
-    fill = next_bar_open * (1 + slippage_bps / 10_000)
+    fill = next_bar_open_price * (1 + slippage_bps / 10_000)
     fill *= 1 + commission_bps / 10_000
     return PaperFill(
-        raw_open=float(next_bar_open),
+        raw_open=float(next_bar_open_price),
         fill_price=float(fill),
         slippage_bps=float(slippage_bps),
         commission_bps=float(commission_bps),
