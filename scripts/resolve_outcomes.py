@@ -5,7 +5,12 @@ from datetime import datetime, timezone
 
 from bist_signal_bot.config import load_settings
 from bist_signal_bot.market_data import MarketDataError, YFinanceProvider
-from bist_signal_bot.paper import (\n    forward_return,\n    next_bar_open,\n    outcome_target_position,\n    simulate_long_entry,\n)
+from bist_signal_bot.paper import (
+    forward_return,
+    next_bar_open,
+    outcome_target_position,
+    simulate_long_entry,
+)
 from bist_signal_bot.storage import Journal
 from bist_signal_bot.validation import DataQualityError, require_valid_ohlcv
 
