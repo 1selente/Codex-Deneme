@@ -282,7 +282,7 @@
   }
 
   function render() {
-    $("company-name").innerHTML = esc(state.company) + ' <span>✎</span>';
+    $("rename-company").innerHTML = esc(state.company) + ' <span>✎</span>';
     $("week-count").textContent = String(state.week).padStart(2, "0");
     $("next-week").disabled = state.status !== "running";
     const cashChange = state.lastWeek.profit;
@@ -326,8 +326,10 @@
   });
 
   $("next-week").addEventListener("click", () => act("next-week"));
-  $("save-game").addEventListener("click", () =>
-    notify(save() ? "Oyun tarayıcına kaydedildi." : "Kayıt yapılamadı. Tarayıcı depolama iznini kontrol et.", !save()));
+  $("save-game").addEventListener("click", () => {
+    const ok = save();
+    notify(ok ? "Oyun tarayıcına kaydedildi." : "Kayıt yapılamadı. Tarayıcı depolama iznini kontrol et.", !ok);
+  });
   $("rename-company").addEventListener("click", () => {
     const name = prompt("Girişimine hangi adı vermek istiyorsun?", state.company);
     if (name !== null) act("rename", { name });
