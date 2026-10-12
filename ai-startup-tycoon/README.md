@@ -5,7 +5,7 @@ A Turkish-language, offline-first business strategy game where you grow a small 
 ## Play
 
 1. Download this folder (or clone the repository and check out the AI Startup Tycoon branch).
-2. Open \`ai-startup-tycoon/index.html\` in a modern desktop browser.
+2. Open `ai-startup-tycoon/index.html` in a modern desktop browser.
 3. Launch an AI product, advance weeks, watch market demand and adjust strategy.
 
 There is no build step, account, API key, subscription, engine installation or internet dependency. The interface is also responsive on mobile browsers.
@@ -30,15 +30,15 @@ All companies, market activity, and financial amounts are fictional. No actual A
 
 Requires Node.js 18+ only for automated tests:
 
-\`\`\`sh
+```sh
 node ai-startup-tycoon/tests/engine.test.js
-\`\`\`
+```
 
 The game itself does **not** require Node.js.
 
 ## Project layout
 
-\`\`\`
+```
 ai-startup-tycoon/
   index.html             Browser entrypoint
   style.css              Responsive management interface
@@ -46,9 +46,9 @@ ai-startup-tycoon/
   app.js                 Screen rendering and player action handling
   tests/engine.test.js   Node.js built-in assertions
   docs/GAME_DESIGN.md    Game vision, scope and roadmap
-\`\`\`
+```
 
-The game engine is independent of HTML and can be run directly in Node.js tests. A single user action is passed to \`AIStartupGame.dispatch(state, action, data)\`. The engine mutates the game state and returns \`{ok, message}\`.
+The game engine is independent of HTML and can be run directly in Node.js tests. A single user action is passed to `AIStartupGame.dispatch(state, action, data)`. The engine mutates the game state and returns `{ok, message}`.
 
 Simulation reproducibility contract: for the same engine version, initial state/seed and ordered player actions, the resulting game state must be identical.
 
