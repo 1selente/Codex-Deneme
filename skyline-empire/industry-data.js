@@ -1,0 +1,38 @@
+(function(root){
+'use strict';
+const D=root.AIR_DATA||(typeof require!=='undefined'?require('./mega-data.js'):null);
+const offer=(id,name,extra)=>({id,name,...extra});
+// v4: 200 new *actionable offers*, no airports, aircraft models, technologies,
+// generic event cards, route profiles, building chains or cargo contracts.
+const cities=['LHR','CDG','FRA','AMS','MAD','FCO','ZRH','ATH','BER','DXB','DOH','CAI','BOM','DEL','JFK','LAX','ORD','YYZ','NRT','ICN','SIN','BKK','SYD','IST'];
+D.IND_SLOTS=cities.map((airport,i)=>{const c=D.CITIES.find(x=>x.id===airport);return offer('slot-'+airport,`${c.name} · Öncelikli Terminal Slotu`,{airport,cost:+(1.2+i*.19).toFixed(2),upkeep:+(.017+i*.002).toFixed(3),demand:.016+(i%4)*.009,delay:.008+(i%3)*.004,level:airport==='IST'?1:1+Math.floor(i/8)})});
+const corporate=['Finans Kongresi','Tıp Kongresi','Uluslararası Üniversiteler','Teknoloji Fuarları','Spor Kulüpleri','Film Festivalleri','Otomotiv Zirvesi','Denizcilik Konferansı','Yazılım Topluluğu','Hukuk Büroları','Global Danışmanlar','Enerji Şirketleri','Öğretmen Birlikleri','Kültür ve Sanat','Sivil Toplum Ağı','Diplomatik Ziyaretler','Yönetici Seyahatleri','Moda Haftası','E-spor Takımları','Bilim Araştırma Ağı'];
+D.IND_CORPORATE=corporate.map((name,i)=>offer('biz-'+i,name,{region:i%5,paxGoal:75+i*35,punctuality:+(.77+(i%5)*.028).toFixed(3),fee:+(.2+i*.045).toFixed(2),bonus:+(.13+i*.049).toFixed(3),penalty:+(.055+i*.013).toFixed(3),duration:12+(i%6)*4,demand:+(.012+(i%4)*.006).toFixed(3),rep:Math.min(85,42+i*2)}));
+const waves=['Sabah İş Seyahati','Akşam Aktarma Hattı','Gece Uçuş Köprüsü','Öğlen Bölgesel Bağlantı','Hızlı 45 Dakika','Körfez Bağlantısı','Avrupa Sabah Dalgası','Uzak Doğu Gece Aktarması','Amerika Öğleden Sonra','Turizm Hafta Sonu','Üçüncü Dalga','Düşük Yoğunluklu Gece','Premium Transfer','Kısa Menzil Servisi','Kıtalar Arası Senkron','Eşzamanlı Bağlantı','Dağıtık Kalkış Planı','Dengeli Hub Programı'];
+D.IND_WAVES=waves.map((name,i)=>offer('wave-'+i,name,{lift:+(.015+i*.0034).toFixed(4),congestion:+(.007+(i%5)*.006).toFixed(4),cost:+(.008+i*.002).toFixed(3),minRoutes:1+(i%4)}));
+const vendors=[
+['Yer Hizmeti','Hızlı Apron','Uygun Maliyetli Apron'],['Yakıt Tedariki','Sabit Fiyatlı Yakıtçılar','Yerel Yakıt Konsorsiyumu'],['Bilet Dağıtımı','Dijital Seyahat Ağı','Bölgesel Satış Ajansı'],['İkram','Taze İkram Zinciri','Ekonomik İkram Şirketi'],['Bagaj','Otomatik Bagaj İşletmesi','Bölgesel Bagaj İşletmesi'],['Temizlik','Kabin Hijyen Operatörü','Hızlı Kabin Ekibi'],['Teknoloji','Güvenli Rezervasyon Bulutu','Hafif Yazılım Altyapısı'],['Yedek Parça','Orijinal Parça Konsorsiyumu','Alternatif Parça Tedarikçisi'],['Güvenlik','Bağımsız Güvenlik Ekibi','Yerel Güvenlik Ortaklığı'],['Müşteri Destek','7/24 Çağrı Merkezi','Dijital Destek Ağı']];
+D.IND_VENDORS=vendors.flatMap(([cat,a,b],i)=>[a,b].map((name,j)=>offer('vendor-'+i+'-'+j,name,{category:i,categoryName:cat,quality:j===0?.028+i*.001:.012,cost:j===0?.033+i*.0015:.008+i*.0008,fee:j===0?.085+i*.009:.025+i*.005,risk:j===0?.003:.014})));
+const procurementModels=D.AIRCRAFT.slice(0,16);
+D.IND_ORDERS=procurementModels.map((p,i)=>offer('order-'+p.id,`Fabrika Teslimatı · ${p.name}`,{model:p.id,discount:.88+(i%4)*.012,lead:3+(i%6),deposit:.25,level:p.level}));
+const tactics=['Rakip Ağ Analizi','Kurumsal Müşteri Geçişi','Yoğun Hat Mücadelesi','Yeni Pazara Erken Giriş','Fiyat Disiplini','Kapasite Savunması','Rakip Sadakat Kırılımı','Hızlı Yolcu Geri Kazanımı','Bölgesel Pazar Derinliği','Düşük Maliyet Karşı Hamlesi','Bağlantı Gücü','Prestij Hattı','Rakip Ağ Kilidi','Mevsimsel Karşılık','Dijital Rekabet Haritası','Uzun Hat Savunması','İki Cephede Büyüme','Pazar Liderliği Hamlesi'];
+D.IND_TACTICS=tactics.map((name,i)=>offer('tactic-'+i,name,{duration:3+(i%5)*2,cost:+(.42+i*.12).toFixed(2),lift:+(.01+i*.004).toFixed(3),counter:+(.012+(i%4)*.013).toFixed(3),repRisk:i%3===0?.2:.05,rep:40+Math.floor(i/3)*5}));
+const safety=['Uçuş Veri İzleme','Yorgunluk Risk Gözlemi','Kokpit Kontrol Disiplini','Kabin Emniyet Turu','Kanat Buzlanma Analizi','Lastik Risk Programı','Motor Yağı Kontrolü','Yakıt Numune Güvenliği','Rüzgâr Kayması Eğitimi','Pist İhlali Önleme','Tehlikeli Madde Denetimi','Yük Denge Merkezi','İniş Performans Denetimi','Kalkış Brifing Standardı','Yangın Güvenliği Kontrolü','Acil Tahliye Tatbikatı','Hava Trafik İletişimi','Yolcu Sağlık Protokolü','Kritik Parça İzleme','Bağımsız Emniyet Akreditasyonu'];
+D.IND_SAFETY=safety.map((name,i)=>offer('safety-'+i,name,{cost:+(.34+i*.11).toFixed(2),duration:16+(i%4)*6,safety:+(.0035+i*.00075).toFixed(5),fee:+(.006+(i%4)*.004).toFixed(3),rep:32+Math.floor(i/3)*6}));
+const unions=['Pilot','Kabin Ekibi','Yer Operasyon','Bakım Teknisyenleri'];
+const packages=['Esnek Vardiya','Dengeli Mutabakat','Kariyer & Eğitim','Tam Güvence'];
+D.IND_LABOR=unions.flatMap((unit,i)=>packages.map((p,j)=>offer('labor-'+i+'-'+j,`${unit} · ${p}`,{unit:i,term:12+j*6,wage:+(.016+j*.026+i*.004).toFixed(3),morale:+(j*1.6+.9).toFixed(2),fatigue:+(.018-j*.006).toFixed(3),signing:+(.12+j*.22).toFixed(2)})));
+const threats=['Meteoroloji','Bilgi Sistemleri','Tedarik Zinciri','Hava Trafik'];
+const protocolLevels=['Olay Takip Merkezi','Çift Kaynak Operasyonu','Özel Müdahale Ekibi','Yedekli Kriz Ağı'];
+D.IND_CONTINGENCY=threats.flatMap((threat,i)=>protocolLevels.map((name,j)=>offer('cont-'+i+'-'+j,`${threat} · ${name}`,{threat:i,protection:+(.13+j*.16).toFixed(2),fee:+(.023+j*.031+i*.006).toFixed(3),setup:+(.38+j*.44+i*.17).toFixed(2)})));
+const ancillary=[
+['Hızlı Güvenlik Hattı',.000023,.022,.004],['Aile Bileti Hizmeti',.000027,.031,.006],['Ek Bagaj Satışı',.000048,.038,-.004],['Esnek Bilet Opsiyonu',.000038,.034,.004],['Havalimanı Transferi',.000047,.043,.008],['Koltuk Seçimi',.00003,.017,-.003],['Çocuklu Yolcu Paketi',.000034,.03,.012],['Tatil Oteli Ağı',.000059,.052,.01],['Araç Kiralama Kanalı',.000042,.032,.003],['Premium Karşılama',.000067,.062,.014],['Özel Yolcu Salonu',.000084,.08,.02],['Uçak İçi Alışveriş',.000037,.028,-.002],['Hızlı Bagaj Teslimi',.000055,.047,.011],['Seyahat Sigorta Aracılığı',.000043,.037,.002],['Gurme İkram Satışı',.000054,.049,.016],['Bağlantı Garanti Paketi',.000061,.058,.018],['Turizm Aktivite Rezervasyonu',.000052,.043,.008],['Öğrenci Uçuş Kulübü',.000025,.024,.016],['İş Seyahati Aboneliği',.000075,.07,.017],['VIP Konsiyerj Merkezi',.00011,.107,.024]
+];
+D.IND_ANCILLARY=ancillary.map(([name,perPax,upkeep,trust],i)=>offer('extra-'+i,name,{capital:+(.42+i*.24).toFixed(2),perPax,upkeep,trust,level:1+Math.floor(i/5)}));
+const bonds=[['4 Haftalık Nakit Fonu',4,.008],['6 Haftalık Vadeli Mevduat',6,.012],['8 Haftalık Repo',8,.018],['10 Haftalık Sabit Getiri',10,.022],['12 Haftalık Şirket Bonosu',12,.031],['14 Haftalık Ticari Senet',14,.038],['16 Haftalık Tahvil',16,.044],['18 Haftalık Uzun Vade',18,.052],['20 Haftalık Stratejik Fon',20,.061],['24 Haftalık Likidite Planı',24,.072],['28 Haftalık Teminatlı Fon',28,.083],['32 Haftalık Vade Portföyü',32,.097]];
+D.IND_TREASURY=bonds.map(([name,term,rate],i)=>offer('bond-'+i,name,{term,rate,min:2+i*.5}));
+D.INDUSTRY_GROUPS=[['IND_SLOTS','Slot İzinleri'],['IND_CORPORATE','Kurumsal Yolcu Anlaşmaları'],['IND_WAVES','Aktarma Dalgaları'],['IND_VENDORS','Tedarikçiler'],['IND_ORDERS','Fabrika Siparişleri'],['IND_TACTICS','Rekabet Hamleleri'],['IND_SAFETY','Emniyet Sertifikaları'],['IND_LABOR','Toplu İş Sözleşmeleri'],['IND_CONTINGENCY','Kriz Protokolleri'],['IND_ANCILLARY','Yan Gelir Ürünleri'],['IND_TREASURY','Hazine Ürünleri']];
+D.INDUSTRY_COUNTS=Object.fromEntries(D.INDUSTRY_GROUPS.map(([key])=>[key,D[key].length]));
+root.AIR_INDUSTRY_DATA=D.INDUSTRY_COUNTS;
+if(typeof module!=='undefined')module.exports=D;
+})(typeof globalThis!=='undefined'?globalThis:this);

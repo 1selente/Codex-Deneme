@@ -1,0 +1,7 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');const D=require('../data.js');require('../expansion-data.js');require('../mega-data.js');
+const groups=[['48 yeni havalimanı',D.CITIES.slice(-48),x=>`${x.id} — ${x.name}, ${x.country} (talep ${x.demand})`],['18 yeni uçak',D.AIRCRAFT.slice(-18),x=>`${x.name} — ${x.seats} koltuk, ${x.range} km, ${x.price} M$`],['72 yeni teknoloji',D.MEGA_TECH,x=>`${x.name} — ${x.domainName}, kademe ${x.stage}, ${x.effect} etkisi +%${Math.round(x.power*1000)/10}`],['18 tesis yatırımı',D.MEGA_PROJECTS,x=>`${x.name} — ${x.familyName}, bonus +%${(x.power*100).toFixed(1)}, yatırım ${x.cost} M$`],['16 rota profili',D.MEGA_PROFILES,x=>`${x.name} — ${x.group}, yolcu talebi ×${x.demand}, bilet ×${x.fare}`],['12 kargo anlaşması',D.CARGO_CONTRACTS.slice(-12),x=>`${x.name} — en az ${x.minTons} ton, ${x.duration} hafta, haftalık ${x.payment} M$`],['20 yeni yönetim olayı',D.EVENTS.slice(-20),x=>`${x.title} — 3 yönetim tercihi`]];
+let out='# Skyline Empire 3.0 — 204 Yeni İçerik Kataloğu\n\nBu 204 madde etkileşimli oyun içeriğidir. Ekonomiye bağlanan sistemler ve etkileşim türleri README içinde ayrıntılıdır.\n\n';let total=0;
+for(const [name,arr,format] of groups){total+=arr.length;out+=`## ${name}\n\n`+arr.map((x,i)=>`${i+1}. **${format(x)}**`).join('\n')+'\n\n';}
+if(total!==204)throw Error('Unexpected catalog count '+total);
+const file=path.join(__dirname,'..','docs','204-YENILIK-KATALOGU.md');fs.writeFileSync(file,out);console.log('catalog',total,'entries',file);

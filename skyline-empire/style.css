@@ -5,3 +5,49 @@
 @media(max-width:980px){.sidebar{width:74px}.brand{padding:23px 14px}.brand>div:last-child,.sideline,.nav-item:not(.active){font-size:0}.brand-logo{width:43px;flex-shrink:0}.navigation{padding:0 9px}.nav-item{font-size:0;justify-content:center;padding:13px 7px}.nav-item span{font-size:22px}.sidebar-footer{display:none}.content-shell{width:calc(100% - 74px)}.command-bar{left:74px}.main-grid{grid-template-columns:1fr 1fr}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.app-shell{display:block}.sidebar{position:fixed;transform:translateX(-110%);width:240px;box-shadow:10px 0 40px #0007;transition:transform .2s;z-index:30}.sidebar.menu-open{transform:translateX(0)}.sidebar .brand>div:last-child,.sidebar .sideline{display:block}.sidebar .nav-item,.sidebar .nav-item:not(.active){font-size:13px;justify-content:flex-start}.sidebar .nav-item span{font-size:21px}.sidebar-footer{display:block}.content-shell{width:100%;padding-bottom:170px}.mobile-menu{display:grid}.topbar{height:77px;padding:12px 15px}.top-kicker{font-size:8px;letter-spacing:1px}.topbar-left strong{font-size:15px}.topbar-right{gap:7px}.week-pill{padding:8px 9px}.week-pill small{font-size:8px}.week-pill strong{font-size:10px}.main{padding:20px 13px}.page-head{align-items:start;flex-wrap:wrap;margin-bottom:18px}.page-head h1{font-size:25px}.page-head p{font-size:12px}.hero{padding:20px}.hero-symbol{font-size:37px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat-card{padding:14px}.stat-label{font-size:9px;letter-spacing:.75px}.stat-number{font-size:22px}.stat-foot{font-size:10px}.main-grid{grid-template-columns:1fr}.section-grid,.cards-grid,.task-grid{grid-template-columns:1fr}.panel{padding:16px}.map-panel{padding:0}.map-panel>.panel-title{padding:16px 16px 0}.command-bar{left:0;bottom:64px;min-height:65px;padding:9px 12px}.turn-left small{display:none}.turn-left strong{font-size:10px}.turn-actions{gap:6px}.turn-actions .btn{padding:8px 10px;min-height:38px;font-size:11px}.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:calc(64px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);justify-content:space-around;align-items:center;background:#0b2032f5;border-top:1px solid #355069;z-index:7}.bottom-nav button{flex:1;display:grid;place-items:center;gap:3px;background:transparent;border:0;color:#8199ad;font-size:21px}.bottom-nav button.active{color:var(--mint)}.bottom-nav small{font-size:9px;font-weight:800}.modal{padding:19px;max-height:89vh}.form-grid{grid-template-columns:1fr}.field-full{grid-column:auto}#toasts{bottom:138px;right:12px;left:12px;max-width:none}.preview-grid{gap:6px}.preview strong{font-size:13px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Skyline Empire 2.0 — large-scale control surfaces */
+.exp-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
+.exp-stats{margin:14px 0 18px}
+.exp-row{padding:15px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid rgba(120,160,190,.15)}
+.exp-row:last-child{border-bottom:0}
+.exp-text{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.exp-text strong{font-size:14px;color:#eaf7ff}
+.exp-text small{font-size:12px;line-height:1.5;color:#9fb5cc}
+.exp-buttons{display:flex;align-items:center;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:62%}
+.exp-buttons button{font-size:11px;padding:9px 10px;white-space:normal;line-height:1.25}
+.exp-triple{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.exp-card{border-radius:12px;background:rgba(37,65,90,.42);border:1px solid rgba(130,170,200,.15);padding:14px}
+.exp-card h3{font-size:12px;color:#9bb5ca;margin:0 0 8px}
+.exp-card p{font-size:21px;font-weight:800;color:#eaf9ff;margin:0 0 4px}
+.exp-card small{font-size:11px;color:#91aabc}
+.exp-meter{display:flex;gap:12px;align-items:center;margin:10px 0 20px}
+.exp-meter span{white-space:nowrap;font-size:13px;color:#a9c3d6}
+.exp-meter .progress-track{flex:1}
+.chart-holder{min-height:180px}
+.chart-holder svg{width:100%;height:165px}
+@media(max-width:1150px){.exp-columns{grid-template-columns:1fr}}
+@media(max-width:640px){.exp-row{flex-direction:column;align-items:stretch}.exp-buttons{max-width:none;justify-content:flex-start}.exp-triple{grid-template-columns:1fr}.exp-columns{gap:12px}.exp-buttons button{font-size:12px}}
+
+/* Mega expansion: mobile-first upgrades */
+.mega-tabs {display:flex;gap:8px;flex-wrap:wrap;margin:16px 0;}
+.mega-tabs .tab {white-space:normal;font-size:12px;padding:9px 13px;}
+.mega-cabin-grid {align-items:start;}
+.mega-cabin-grid .panel {min-width:0;}
+.mega-cabin-grid .field select {width:100%;max-width:100%;}
+.mega-spark {display:flex;gap:3px;align-items:end;height:160px;border-bottom:1px solid #496077;padding:8px;}
+.mega-spark-bar {flex:1;min-width:4px;background:linear-gradient(0deg,#147c85,#6df5ce);border-radius:4px 4px 0 0;}
+@media(max-width:650px){.mega-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}.mega-tabs .tab{flex-shrink:0}.mega-cabin-grid{grid-template-columns:1fr!important}.exp-row{gap:9px;flex-wrap:wrap}.exp-buttons{max-width:100%;flex-wrap:wrap}}
+/* All 18 navigation items remain reachable even on short phones and laptops. */
+.sidebar .navigation{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3c6677 transparent;}
+.sidebar .brand{padding-bottom:19px;flex-shrink:0;}
+.sidebar .sideline{flex-shrink:0;}
+.sidebar .sidebar-footer{margin:0 21px 16px;flex-shrink:0;}
+@media(max-width:680px){.sidebar{height:100dvh}.sidebar .navigation{overflow-y:auto;scroll-padding-bottom:20px}}
+
+/* 4.0 — cross-system enterprise management */
+.ind-status{display:block;margin-top:6px;color:#e7c78c;font-size:10px;line-height:1.45}
+.ind-spark{height:110px;display:flex;align-items:end;gap:3px;padding:12px;background:#102c3d;border:1px solid #355165;border-radius:12px;overflow:hidden}
+.ind-tiny{flex:1;min-width:2px;background:linear-gradient(#62ebd0,#357b9c);border-radius:3px 3px 0 0;transition:height .2s}
+.ind-scroll{max-height:560px;overflow-y:auto;padding-right:6px;overscroll-behavior:contain}
+.ind-scroll::-webkit-scrollbar{width:6px}.ind-scroll::-webkit-scrollbar-thumb{background:#3b6875;border-radius:3px}

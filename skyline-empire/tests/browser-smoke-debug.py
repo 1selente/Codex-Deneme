@@ -1,0 +1,60 @@
+from playwright.sync_api import sync_playwright
+from pathlib import Path
+cwd=str(Path(__file__).resolve().parents[1])
+with sync_playwright() as p:
+  browser=p.chromium.launch(headless=True,executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+  for viewport in [{'width':1380,'height':900},{'width':390,'height':844}]:
+   page=browser.new_page(viewport=viewport)
+   errors=[]
+   page.on('pageerror', lambda e: errors.append(str(e)))
+   page.goto('about:blank')
+   page.evaluate("Object.defineProperty(window,'localStorage',{value:{getItem:(k)=>null,setItem:(k,v)=>{},removeItem:(k)=>{}},configurable:true})")
+   html=Path(cwd,'index.html').read_text()
+   import re
+   html=re.sub(r'<link rel="stylesheet" href="style.css">','<style>'+Path(cwd,'style.css').read_text()+'</style>',html)
+   for js in ['data.js','expansion-data.js','mega-data.js','engine.js','expansion-engine.js','mega-engine.js','expansion-ui.js','mega-ui.js','app.js']:
+    html=html.replace('<script src="'+js+'"></script>', '<script>'+Path(cwd,js).read_text().replace('</script>','<\\/script>')+'</script>')
+   page.set_content(html)
+   page.wait_for_selector('#new-game-form',timeout=6000)
+   page.locator('#new-game-form input[name="name"]').fill('Anka Test')
+   page.locator('#new-game-form button[type="submit"]').click()
+   page.wait_for_timeout(300)
+   assert page.locator('#company-title').inner_text()=='Anka Test'
+   for name in ['operations','cargo','people','strategy','analytics','finance','fleet','routes','research','lab','board','cabin','hangar','intelligence','market','career','settings']:
+    if viewport['width']<500: page.locator('#mobile-menu').click()
+    page.locator(f'.sidebar [data-view="{name}"]').click()
+    page.wait_for_timeout(70)
+    assert page.locator('#view').inner_text().strip(),name
+    assert len(errors)==0,(name,errors)
+   if viewport['width']<500: page.locator('#mobile-menu').click()
+   page.locator('.sidebar [data-view="people"]').click()
+   old=page.locator('#top-cash').inner_text()
+   page.locator('[data-action="exp-hire"]').first.click()
+   assert old!=page.locator('#top-cash').inner_text()
+   if viewport['width']<500: page.locator('#mobile-menu').click()
+   page.locator('.sidebar [data-view="cargo"]').click()
+   page.locator('[data-action="exp-cargo-general"]').first.click()
+   assert 'ton/hafta' in page.locator('#view').inner_text()
+   if viewport['width']<500: page.locator('#mobile-menu').click()
+   page.locator('.sidebar [data-view="lab"]').click()
+   page.locator('[data-action="mega-research"]').first.click()
+   assert '1/72' in page.locator('#view').inner_text()
+   if viewport['width']<500: page.locator('#mobile-menu').click()
+   page.locator('.sidebar [data-view="board"]').click()
+   page.locator('[data-action="mega-project"]').first.click()
+   assert '1/18' in page.locator('#view').inner_text()
+   if viewport['width']<500: page.locator('#mobile-menu').click()
+   page.locator('.sidebar [data-view="hangar"]').click()
+   page.locator('[data-action="mega-retrofit"]').first.click()
+   assert '1/3' in page.locator('#view').inner_text()
+   if viewport['width']<500: page.locator('#mobile-menu').click()
+   page.locator('.sidebar [data-view="cabin"]').click()
+   page.locator('[data-mega-profile]').first.select_option('first')
+   assert 'First Class' in page.locator('#view').inner_text()
+   page.locator('[data-action="advance"][data-weeks="1"]').click()
+   page.wait_for_timeout(100)
+   assert len(errors)==0,errors
+   page.screenshot(path=f'/mnt/data/skyline-empire/screenshot-{viewport["width"]}.png',full_page=True)
+   print('PASS browser',viewport['width'],'viewport view tests + actions + tick')
+   page.close()
+  browser.close()
