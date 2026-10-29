@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a1526">
+  <meta name="description" content="Skyline Empire: Kendi havayolu şirketini kur. Tamamen çevrimdışı, gerçekçi ve Türkçe havayolu yönetim oyunu.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <title>Skyline Empire — Airline Tycoon</title>
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo">✈</div><div><strong>SKYLINE<span>EMPIRE</span></strong><small>AIRLINE TYCOON</small></div></div>
+      <div class="sideline">ŞİRKET YÖNETİMİ</div>
+      <nav class="navigation" id="navigation" aria-label="Ana menü">
+        <button data-view="dashboard" class="nav-item active"><span>◈</span> Genel Bakış</button>
+        <button data-view="routes" class="nav-item"><span>⌁</span> Uçuş Hatları</button>
+        <button data-view="fleet" class="nav-item"><span>✈</span> Uçak Filosu</button>
+        <button data-view="market" class="nav-item"><span>◎</span> Dünya Haritası</button>
+        <button data-view="research" class="nav-item"><span>✧</span> Araştırma</button>
+        <button data-view="finance" class="nav-item"><span>▥</span> Finans</button>
+        <button data-view="career" class="nav-item"><span>★</span> Kariyer ve Görevler</button>
+        <button data-view="settings" class="nav-item"><span>⚙</span> Oyun Ayarları</button>
+      </nav>
+      <div class="sidebar-footer"><div class="connection"><span class="online-dot"></span> OFFLINE OYNANIŞ</div><div class="version">Sürüm 1.0 · Ücretsiz · Reklamsız</div></div>
+    </aside>
+    <div class="content-shell">
+      <header class="topbar">
+        <div class="topbar-left"><button id="mobile-menu" aria-label="Menü" class="icon-btn mobile-menu">☰</button><div><div class="top-kicker">CEO KONTROL PANELİ <span class="top-divider">/</span> <span id="view-crumb">GENEL BAKIŞ</span></div><strong id="company-title">Skyline Empire</strong></div></div>
+        <div class="topbar-right"><div class="header-stat"><small>NAKİT</small><strong id="top-cash">—</strong></div><div class="header-stat header-profit"><small>HAFTALIK TAHMİN</small><strong id="top-profit">—</strong></div><div class="week-pill"><small>YIL <span id="top-year">1</span></small><strong>HAFTA <span id="top-week">1</span></strong></div></div>
+      </header>
+      <main class="main" id="main"><div id="view" aria-live="polite"></div></main>
+      <div class="command-bar"><div class="turn-left"><span class="turn-pulse"></span><div><strong id="turn-head">CEO: Karar zamanı</strong><small id="turn-caption">Uçuşlarını yönet, bir sonraki haftaya geç.</small></div></div><div class="turn-actions"><button class="btn btn-ghost" data-action="advance" data-weeks="4" title="Dört hafta ilerlet">+4 hafta</button><button class="btn btn-primary" data-action="advance" data-weeks="1"><span>▶</span> Haftayı İlerlet</button></div></div>
+    </div>
+  </div>
+  <nav class="bottom-nav" aria-label="Mobil menü"><button data-view="dashboard" class="active">◈<small>Genel</small></button><button data-view="routes">⌁<small>Hatlar</small></button><button data-view="fleet">✈<small>Filo</small></button><button data-view="market">◎<small>Harita</small></button><button data-view="career">★<small>Görevler</small></button></nav>
+  <div id="modal-root"></div><div id="toasts" aria-live="polite"></div>
+  <script src="data.js"></script><script src="engine.js"></script><script src="app.js"></script>
+</body>
+</html>
